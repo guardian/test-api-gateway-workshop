@@ -1,0 +1,17 @@
+stacks: [playground]
+regions: [eu-west-1]
+templates:
+  test-api-gateway-workshop :
+    type: aws-lambda
+    app: test-api-gateway-workshop
+    contentDirectory: test-api-gateway-workshop
+    parameters:
+      bucket: gu-test-api-gateway-workshop-dist
+      functionNames: [test-api-gateway-workshop]
+      fileName: test-api-gateway-workshop.zip
+      prefixStack: false
+
+deployments:
+  test-api-gateway-workshop-upload:
+    template: test-api-gateway-workshop
+    actions: [uploadLambda]
