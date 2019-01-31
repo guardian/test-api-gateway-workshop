@@ -1,13 +1,13 @@
 stacks: [playground]
 regions: [eu-west-1]
 templates:
-  test-api-gateway-workshop :
+  test-api-gateway-workshop:
     type: aws-lambda
     app: test-api-gateway-workshop
     contentDirectory: test-api-gateway-workshop
     parameters:
       bucket: gu-test-api-gateway-workshop-dist
-      functionNames: [test-api-gateway-workshop]
+      functionNames: [test-api-gateway-workshop-]
       fileName: test-api-gateway-workshop.zip
       prefixStack: false
 
@@ -15,3 +15,17 @@ deployments:
   test-api-gateway-workshop-upload:
     template: test-api-gateway-workshop
     actions: [uploadLambda]
+
+  test-api-gateway-workshop-cfn:
+    type: cloud-formation
+    app: test-api-gateway-workshop
+    dependencies: [test-api-gateway-workshop-upload]
+    parameters:
+      prependStackToCloudFormationStackName: false
+      cloudFormationStackName: test-api-gateway-workshop
+      templatePath: cfn.yaml
+
+  test-api-gateway-workshop-lambda-update:
+    template: test-api-gateway-workshop
+    actions: [updateLambda]
+    dependencies: [test-api-gateway-workshop-cfn]
